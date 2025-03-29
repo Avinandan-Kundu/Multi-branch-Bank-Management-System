@@ -1,0 +1,130 @@
+/* index.css */
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap');
+
+:root {
+  --primary-color: #003366; /* Deep blue (bank theme) */
+  --secondary-color: #ffffff;
+  --accent-color: #f2f2f2;
+  --font-family: 'Roboto', sans-serif;
+  /* Gradient as a reusable variable */
+  --gradient-bg: linear-gradient(135deg, #f2f2f2 0%, #ffffff 100%);
+  --content-bg: rgba(255, 255, 255, 0.9);
+  --border-radius: 8px;
+  --box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  --input-border: 1px solid #ddd;
+}
+
+/* Base Styles */
+body {
+  margin: 0;
+  font-family: var(--font-family);
+  color: var(--primary-color);
+  min-height: 100vh;
+}
+
+/* Full page gradient background */
+.app-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(135deg, #95e6a9 0%, #709df0 100%);
+  overflow-y: auto;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 20px;
+}
+
+/* Content container */
+.content-container {
+  background: var(--content-bg);
+  border-radius: var(--border-radius);
+  box-shadow: var(--box-shadow);
+  width: 100%;
+  max-width: 1200px;
+  margin: 20px 0;
+  padding: 30px;
+}
+
+/* Typography */
+h1, h2, h3 {
+  margin: 0.5em 0;
+  color: var(--primary-color);
+}
+
+/* Links */
+a {
+  text-decoration: none;
+  color: var(--primary-color);
+  transition: color 0.2s;
+}
+
+a:hover {
+  color: #002244;
+}
+
+/* Buttons */
+button {
+  border: none;
+  background-color: var(--primary-color);
+  color: var(--secondary-color);
+  padding: 12px 24px;
+  border-radius: var(--border-radius);
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s;
+  font-size: 16px;
+}
+
+button:hover {
+  background-color: #002244;
+  transform: translateY(-1px);
+}
+
+/* Form elements */
+input, select, textarea {
+  width: 100%;
+  padding: 10px;
+  border: var(--input-border);
+  border-radius: 4px;
+  box-sizing: border-box;
+  font-family: var(--font-family);
+  margin-bottom: 15px;
+}
+
+/* Cards */
+.card {
+  background: var(--content-bg);
+  border-radius: var(--border-radius);
+  padding: 1.5em;
+  margin: 1em 0;
+  box-shadow: var(--box-shadow);
+}
+
+/* Header */
+.header {
+  width: 100%;
+  padding: 1em;
+  background: var(--content-bg);
+  box-shadow: var(--box-shadow);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+/* Utility classes */
+.text-center {
+  text-align: center;
+}
+
+.full-width {
+  width: 100%;
+}
+
+.logo-img {
+  width: 300px;
+  max-width: 100%;
+  height: auto;
+}
