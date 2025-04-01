@@ -21,7 +21,35 @@ Prettier is a VS Code extension used for formatting your code in an efficient an
 ### Download the Project ZIP folder
 First, download the project folder to your PC. Refer to the screenshot below.
 
+![image](https://github.com/user-attachments/assets/a864be22-0eae-48b2-8dea-0f03fb978139)
 
+### Open the Project folder in VS Code
+Next, extract the zip folder and open the extracted folder in VS Code.
+
+### Run the project
+To run the project, open a terminal in VS Code and then execute the following commands:
+
+a) `npm install` OR `npm i`
+
+![image](https://github.com/user-attachments/assets/cc9c3145-2c54-4470-8b21-e52a048583f6)
+
+b) `npm run dev` and then `Ctrl + click` on the link to view the web application on your browser
+
+![Screenshot 2025-04-01 151757](https://github.com/user-attachments/assets/41b6e9ef-6d4e-4ee3-97ef-115562381702)
+
+![image](https://github.com/user-attachments/assets/d0c7b931-b699-4d69-ae87-c79bc7d4d0d0)
+
+Refer to this [video tutorial](https://youtu.be/WIBSPhffOHI) to help guide you during running the project.
+
+### Install Vite (Optional)
+If you want to further develop and test the project, it is recommended that you install the Vite frontend tool by running the following command on the VS Code terminal:
+
+`npm create vite@latest` and then typing 'y' upon request
+
+## Viewing the Project Only
+If you want to just view the web app (without the intention of further developing or testing it), simply visit [techfinance.netlify.app](https://techfinance.netlify.app)
+
+***
 
 # React + TypeScript + Vite
 
