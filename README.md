@@ -1,3 +1,9 @@
+# Project Readme
+
+## Project Pre-requisites
+### Install Node.js® (Version 16.20.2 or higher)
+In case you do not have Node.js already installed on your machine, please go to [this website](https://nodejs.org/en/download "Node.js Official Download Page") to download Node.js Version 16.20.2 or higher (latest LTS version is recommended). Once downloaded, install it by following this [video tutorial](https://youtu.be/NqANV4wXhx4).
+
 # React + TypeScript + Vite
 
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
