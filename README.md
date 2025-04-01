@@ -2,7 +2,26 @@
 
 ## Project Pre-requisites
 ### Install Node.js® (Version 16.20.2 or higher)
-In case you do not have Node.js already installed on your machine, please go to [this website](https://nodejs.org/en/download "Node.js Official Download Page") to download Node.js Version 16.20.2 or higher (latest LTS version is recommended). Once downloaded, install it by following this [video tutorial](https://youtu.be/NqANV4wXhx4).
+In case you do not have Node.js already installed on your machine, please visit [this website](https://nodejs.org/en/download "Node.js Official Download Page") to download Node.js Version 16.20.2 or higher (latest LTS version is recommended). Once downloaded, install Node.js by following this [video tutorial](https://youtu.be/NqANV4wXhx4).
+
+### Install Visual Studio Code (VS Code)
+This project was created in VS Code development environment. Feel free to use any other code editor as per your choice. To download VS Code, please visit [this website](https://code.visualstudio.com/download) and download the latest and suitable version for your operating system. Once downloaded, install VS Code by following the on-screen instructions. Here is a [video tutorial](https://youtu.be/cu_ykIfBprI) to guide you during the installation process.
+
+### Optional Requirements (Recommended)
+#### Install Prettier Extension
+Prettier is a VS Code extension used for formatting your code in an efficient and aesthetic manner. Refer to the screenshots provided below.
+
+![image](https://github.com/user-attachments/assets/ff2e2be0-ec17-456d-ba25-1029c14ac1f4)
+
+![image](https://github.com/user-attachments/assets/d12557b5-6dba-4da1-8b55-68d7e8cc4666)
+
+![Screenshot 2025-04-01 144430](https://github.com/user-attachments/assets/8868c065-fb70-4f05-8cf0-b2b0f3af2f2d)
+
+## Running the Project
+### Download the Project ZIP folder
+First, download the project folder to your PC. Refer to the screenshot below.
+
+
 
 # React + TypeScript + Vite
 
