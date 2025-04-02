@@ -4,14 +4,18 @@ export interface User {
   email: string;
   password: string;
   role: "customer" | "admin";
+  account?: Account;
   transactions?: Transaction[];
 }
 
 export interface Transaction {
+  id?: number;
+  date: string;
   type: "deposit" | "withdrawal";
   amount: number;
-  date: string;
-  branch: string;
+  balance: number;
+  userEmail: string;
+  branchName?: string;
 }
 
 export interface Branch {

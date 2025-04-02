@@ -29,12 +29,16 @@ const BranchManagement: React.FC<BranchManagementProps> = ({ branches, setBranch
   };
 
   return (
-    <div>
-      <h3>Branch Management</h3>
-      <form onSubmit={handleReplenish}>
-        <div>
-          <label>Select Branch: </label>
-          <select value={selectedBranch} onChange={e => setSelectedBranch(e.target.value)}>
+    <div style={{ marginBottom: "30px", padding: "20px", border: "1px solid #e0e0e0", borderRadius: "8px" }}>
+      <h3 style={{ textAlign: "left", marginBottom: "20px" }}>Branch Management</h3>
+      <form onSubmit={handleReplenish} style={{ display: "flex", flexDirection: "column", gap: "15px" }}>
+        <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-start" }}>
+          <label style={{ marginBottom: "5px" }}>Select Branch:</label>
+          <select
+            value={selectedBranch}
+            onChange={e => setSelectedBranch(e.target.value)}
+            style={{ width: "100%", padding: "8px", boxSizing: "border-box" }}
+          >
             {branches.map((branch, index) => (
               <option key={index} value={branch.name}>
                 {branch.name} (Cash Limit: ${branch.cashLimit})
@@ -42,18 +46,37 @@ const BranchManagement: React.FC<BranchManagementProps> = ({ branches, setBranch
             ))}
           </select>
         </div>
-        <div>
-          <label>Replenish Amount ($): </label>
+        <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-start" }}>
+          <label style={{ marginBottom: "5px" }}>Replenish Amount ($):</label>
           <input
             type="number"
             value={amount}
             onChange={e => setAmount(parseFloat(e.target.value))}
             required
+            style={{ width: "100%", padding: "8px", boxSizing: "border-box" }}
           />
         </div>
-        <button type="submit">Replenish</button>
+        <div style={{ display: "flex", justifyContent: "center" }}>
+          <button 
+            type="submit"
+            style={{ 
+              padding: "10px 20px",
+              marginTop: "10px"
+            }}
+          >
+            Replenish
+          </button>
+        </div>
       </form>
-      {message && <p>{message}</p>}
+      {message && (
+        <p style={{ 
+          marginTop: "15px",
+          color: message.includes("successfully") ? "green" : "red",
+          textAlign: "center"
+        }}>
+          {message}
+        </p>
+      )}
     </div>
   );
 };

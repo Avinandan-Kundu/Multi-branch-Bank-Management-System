@@ -1,57 +1,47 @@
 import React, { useState, useEffect } from "react";
 import BranchManagement from "./AdminDashboard/BranchManagement";
-import { getTransactions, getBranches } from "../services/BankService";
-import { Transaction, Branch, User } from "../types";
+import { getBranches } from "../services/BankService";
+import { Branch, User } from "../types";
 import { useNavigate } from "react-router-dom";
+import Navbar from "./Navbar";
+import "./AdminDashboard.css";
 
 const AdminDashboard: React.FC = () => {
   const [branches, setBranches] = useState<Branch[]>([]);
-  const [transactions, setTransactions] = useState<Transaction[]>([]);
+  const [user, setUser] = useState<User | null>(null);
   const navigate = useNavigate();
 
   useEffect(() => {
     const storedUser = localStorage.getItem("user");
     if (storedUser) {
-      const user: User = JSON.parse(storedUser);
-      if (user.role !== "admin") {
-        navigate("/login");
-      }
+      const userData: User = JSON.parse(storedUser);
+      setUser(userData);
+      if (userData.role !== "admin") navigate("/login");
     } else {
       navigate("/login");
     }
     getBranches().then(setBranches).catch(console.error);
-    getTransactions().then(setTransactions).catch(console.error);
   }, [navigate]);
 
+  if (!user) return null;
+
   return (
-    <div>
-      <h2>Admin Dashboard</h2>
-      <h3>All Transactions</h3>
-      {transactions.length === 0 ? (
-        <p>No transactions available.</p>
-      ) : (
-        <table style={{ margin: "0 auto" }}>
-          <thead>
-            <tr>
-              <th>Date</th>
-              <th>Type</th>
-              <th>Amount ($)</th>
-              <th>Branch</th>
-            </tr>
-          </thead>
-          <tbody>
-            {transactions.map((t, index) => (
-              <tr key={index}>
-                <td>{new Date(t.date).toLocaleString()}</td>
-                <td>{t.type}</td>
-                <td>{t.amount}</td>
-                <td>{t.branch}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      )}
-      <BranchManagement branches={branches} setBranches={setBranches} />
+    <div className="app-container">
+      <Navbar user={user} />
+      <div className="dashboard-container">
+        <h2 className="dashboard-welcome">Welcome, {user.name}!</h2>
+        
+        <div className="admin-actions">
+          <button 
+            className="transaction-button"
+            onClick={() => navigate("/admin/transactions")}
+          >
+            View All Transactions
+          </button>
+        </div>
+
+        <BranchManagement branches={branches} setBranches={setBranches} />
+      </div>
     </div>
   );
 };

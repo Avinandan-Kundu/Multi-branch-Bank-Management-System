@@ -13,43 +13,111 @@ const Login: React.FC = () => {
     setError("");
     try {
       const user = await loginUser(email, password);
-      // Store user info (e.g., in localStorage) and navigate accordingly
       localStorage.setItem("user", JSON.stringify(user));
+      
       if (user.role === "admin") {
         navigate("/admin");
       } else {
         navigate("/customer");
       }
+      
+      window.location.reload();
     } catch (err) {
       setError(err as string);
     }
   };
 
   return (
-    <div>
-      <h2>Login</h2>
-      <form onSubmit={handleLogin}>
-        <div>
-          <label>Email: </label>
-          <input
-            type="email"
-            value={email}
-            onChange={e => setEmail(e.target.value)}
-            required
+    <div className="app-container">
+      <div style={{ 
+        maxWidth: "400px", 
+        width: "100%",
+        margin: "2rem auto",
+        backgroundColor: "rgba(255, 255, 255, 0.9)",
+        padding: "30px",
+        borderRadius: "8px",
+        boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)"
+      }}>
+        <h2 style={{ textAlign: "center", marginBottom: "25px", color: "#003366" }}>Login</h2>
+        <form onSubmit={handleLogin} style={{ display: "flex", flexDirection: "column", gap: "15px" }}>
+          <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-start" }}>
+            <label style={{ marginBottom: "5px", color: "#003366" }}>Email:</label>
+            <input
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+              style={{ 
+                width: "100%", 
+                padding: "10px", 
+                boxSizing: "border-box",
+                border: "1px solid #ddd",
+                borderRadius: "4px"
+              }}
+            />
+          </div>
+          <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-start" }}>
+            <label style={{ marginBottom: "5px", color: "#003366" }}>Password:</label>
+            <input
+              type="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+              style={{ 
+                width: "100%", 
+                padding: "10px", 
+                boxSizing: "border-box",
+                border: "1px solid #ddd",
+                borderRadius: "4px"
+              }}
+            />
+          </div>
+          {error && <p style={{ color: "red", margin: "5px 0 0 0" }}>{error}</p>}
+          <button 
+            type="submit"
+            style={{ 
+              padding: "12px",
+              marginTop: "15px",
+              backgroundColor: "#003366",
+              color: "white",
+              border: "none",
+              borderRadius: "4px",
+              cursor: "pointer",
+              fontSize: "16px",
+              fontWeight: "500",
+              transition: "background-color 0.3s"
+            }}
+          >
+            Login
+          </button>
+          {/* New signup prompt */}
+          <div style={{ marginTop: "15px", textAlign: "center" }}>
+            <span style={{ color: "#003366" }}>Don't have an account? </span>
+            <button 
+              onClick={() => navigate("/signup")}
+              style={{
+                background: "none",
+                border: "none",
+                color: "#003366",
+                cursor: "pointer",
+                textDecoration: "underline",
+                padding: "0",
+                fontSize: "inherit"
+              }}
+            >
+              Sign Up
+            </button>
+          </div>
+        </form>
+        
+        <div style={{ marginTop: "30px", textAlign: "center" }}>
+          <img 
+            src="/bank_logo.jpg" 
+            alt="People's Choice Bank Logo" 
+            style={{ width: "500px", maxWidth: "100%" }} 
           />
         </div>
-        <div>
-          <label>Password: </label>
-          <input
-            type="password"
-            value={password}
-            onChange={e => setPassword(e.target.value)}
-            required
-          />
-        </div>
-        {error && <p style={{ color: "red" }}>{error}</p>}
-        <button type="submit">Login</button>
-      </form>
+      </div>
     </div>
   );
 };
