@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Branch } from "../../types";
-import { replenishBranch } from "../../services/BankService";
+import API from "../../services/api";
 
 interface BranchManagementProps {
   branches: Branch[];
@@ -15,16 +15,18 @@ const BranchManagement: React.FC<BranchManagementProps> = ({ branches, setBranch
   const handleReplenish = async (e: React.FormEvent) => {
     e.preventDefault();
     setMessage("");
-    if (amount <= 0) {
-      return setMessage("Replenishment amount must be positive.");
-    }
+    
     try {
-      const updatedBranch = await replenishBranch(selectedBranch, amount);
-      const updatedBranches = branches.map(b => b.name === updatedBranch.name ? updatedBranch : b);
+      const response = await API.patch(`/branches/${selectedBranch}/reset`, { amount });
+      const updatedBranch = response.data;
+      
+      const updatedBranches = branches.map(b => 
+        b.name === updatedBranch.name ? updatedBranch : b
+      );
       setBranches(updatedBranches);
-      setMessage(`Branch ${updatedBranch.name} replenished successfully. New cash limit: $${updatedBranch.cashLimit}`);
-    } catch (err) {
-      setMessage(err as string);
+      setMessage(`Branch ${updatedBranch.name} replenished. New balance: $${updatedBranch.balance}`);
+    } catch (err: any) {
+      setMessage(err.response?.data?.error || 'Replenishment failed');
     }
   };
 

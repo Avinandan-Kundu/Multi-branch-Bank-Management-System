@@ -15,14 +15,19 @@ const Deposit: React.FC<DepositProps> = ({ userId }) => {
     e.preventDefault();
     setError("");
     setSuccess("");
-    if (amount <= 0) {
-      return setError("Deposit amount must be positive.");
-    }
+    
     try {
-      const res = await processTransaction(userId, branch, { type: "deposit", amount, date: "", branch });
-      setSuccess(`Deposit successful! Branch ${branch} new cash limit: $${res.branch.cashLimit}`);
-    } catch (err) {
-      setError(err as string);
+      const res = await processTransaction(userId, branch, {
+        type: 'deposit',
+        amount,
+        date: new Date().toISOString(),
+        branch
+      });
+      
+      setSuccess(`Deposit successful! New branch balance: $${res.branch.balance}`);
+      setAmount(0);
+    } catch (err: any) {
+      setError(err.response?.data?.error || 'Deposit failed');
     }
   };
 

@@ -14,6 +14,39 @@ const CustomerDashboard: React.FC = () => {
   const [account, setAccount] = useState<Account | null>(null);
   const navigate = useNavigate();
 
+  // WebSocket connection for real-time updates
+  useEffect(() => {
+    const ws = new WebSocket('ws://localhost:5005');
+
+    ws.onopen = () => {
+      console.log('WebSocket connected');
+    };
+
+    ws.onmessage = (event) => {
+      const data = JSON.parse(event.data);
+      if (data.type === 'BALANCE_UPDATE') {
+        setAccount(prev => {
+          if (!prev) return prev;
+          return { ...prev, balance: data.balance };
+        });
+      }
+    };
+
+    ws.onerror = (error) => {
+      console.error('WebSocket error:', error);
+    };
+
+    ws.onclose = () => {
+      console.log('WebSocket disconnected');
+    };
+
+    // Cleanup on component unmount
+    return () => {
+      ws.close();
+    };
+  }, []); // Empty dependency array means this runs once on mount
+
+  // Existing data fetching useEffect
   useEffect(() => {
     const storedUser = localStorage.getItem("user");
     if (storedUser) {
@@ -42,6 +75,7 @@ const CustomerDashboard: React.FC = () => {
   return (
     <div className="app-container">
       <div className="dashboard-container">
+        {/* Existing JSX remains unchanged */}
         {user && (
           <header className="dashboard-header">
             <h2>Welcome, {user.name}!</h2>
@@ -51,28 +85,31 @@ const CustomerDashboard: React.FC = () => {
                   Chequing Account Number: <strong>{account.number}</strong>
                 </p>
                 <p>
-                  Balance: <strong>${account.balance.toFixed(2)}</strong>
+                  Balance: <strong>${account.balance?.toFixed(2)}</strong>
                 </p>
               </div>
             )}
-            <button className="logout-button" onClick={handleLogout}>Logout</button>
+            <button className="logout-button" onClick={handleLogout}>
+              Logout
+            </button>
           </header>
         )}
 
         <div className="dashboard-nav">
-          <button 
+          {/* Navigation buttons remain unchanged */}
+          <button
             className={`nav-button ${activeTab === "deposit" ? "active" : ""}`}
             onClick={() => setActiveTab("deposit")}
           >
             Deposit
           </button>
-          <button 
+          <button
             className={`nav-button ${activeTab === "withdrawal" ? "active" : ""}`}
             onClick={() => setActiveTab("withdrawal")}
           >
             Withdrawal
           </button>
-          <button 
+          <button
             className={`nav-button ${activeTab === "history" ? "active" : ""}`}
             onClick={() => setActiveTab("history")}
           >
@@ -86,7 +123,7 @@ const CustomerDashboard: React.FC = () => {
           {activeTab === "history" && <TransactionHistory transactions={transactions} />}
         </div>
 
-        {/* Logo added here */}
+        {/* Bank logo section remains unchanged */}
         <div style={{ marginTop: "30px", textAlign: "center" }}>
           <img 
             src="/bank_logo.jpg" 

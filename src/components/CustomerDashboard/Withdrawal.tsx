@@ -15,14 +15,19 @@ const Withdrawal: React.FC<WithdrawalProps> = ({ userId }) => {
     e.preventDefault();
     setError("");
     setSuccess("");
-    if (amount <= 0) {
-      return setError("Withdrawal amount must be positive.");
-    }
+    
     try {
-      const res = await processTransaction(userId, branch, { type: "withdrawal", amount, date: "", branch });
-      setSuccess(`Withdrawal successful! Branch ${branch} new cash limit: $${res.branch.cashLimit}`);
-    } catch (err) {
-      setError(err as string);
+      const res = await processTransaction(userId, branch, {
+        type: 'withdrawal', // Changed from 'withdraw' to 'withdrawal'
+        amount,
+        date: new Date().toISOString(),
+        branch
+      });
+      
+      setSuccess(`Withdrawal successful! New branch balance: $${res.branch.balance}`);
+      setAmount(0);
+    } catch (err: any) {
+      setError(err.response?.data?.error || 'Withdrawal failed');
     }
   };
 
@@ -37,11 +42,17 @@ const Withdrawal: React.FC<WithdrawalProps> = ({ userId }) => {
             value={amount}
             onChange={e => setAmount(parseFloat(e.target.value))}
             required
+            min="0.01"
+            step="0.01"
           />
         </div>
         <div>
           <label>Branch: </label>
-          <select value={branch} onChange={e => setBranch(e.target.value)}>
+          <select 
+            value={branch} 
+            onChange={e => setBranch(e.target.value)}
+            style={{ marginLeft: '8px', padding: '4px' }}
+          >
             <option value="Downtown Toronto">Downtown Toronto</option>
             <option value="East York">East York</option>
             <option value="Scarborough">Scarborough</option>
@@ -49,9 +60,21 @@ const Withdrawal: React.FC<WithdrawalProps> = ({ userId }) => {
             <option value="Etobicoke">Etobicoke</option>
           </select>
         </div>
-        {error && <p style={{ color: "red" }}>{error}</p>}
-        {success && <p style={{ color: "green" }}>{success}</p>}
-        <button type="submit">Withdraw</button>
+        {error && <p style={{ color: "red", marginTop: "10px" }}>{error}</p>}
+        {success && <p style={{ color: "green", marginTop: "10px" }}>{success}</p>}
+        <button 
+          type="submit"
+          style={{ 
+            marginTop: "15px",
+            padding: "8px 20px",
+            backgroundColor: "#003366",
+            color: "white",
+            border: "none",
+            borderRadius: "4px"
+          }}
+        >
+          Withdraw
+        </button>
       </form>
     </div>
   );
