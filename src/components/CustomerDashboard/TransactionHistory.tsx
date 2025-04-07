@@ -28,7 +28,7 @@ const TransactionHistory: React.FC<TransactionHistoryProps> = ({ transactions })
                 <td>{index + 1}</td>
                 <td>{tx.type}</td>
                 <td>{tx.amount.toFixed(2)}</td>
-                <td>{new Date(tx.date).toLocaleString()}</td>
+                {/* <td>{new Date(tx.date).toLocaleString()}</td> */}
               </tr>
             ))}
           </tbody>
