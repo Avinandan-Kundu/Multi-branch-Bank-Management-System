@@ -1,13 +1,12 @@
 import React, { useState } from "react";
-import { processTransaction } from "../../services/BankService";
+import { withdrawFromAccount } from "../../services/BankService";
 
 interface WithdrawalProps {
-  userId: number;
+  userId: string;
 }
 
 const Withdrawal: React.FC<WithdrawalProps> = ({ userId }) => {
   const [amount, setAmount] = useState<number>(0);
-  const [branch, setBranch] = useState<string>("Downtown Toronto");
   const [error, setError] = useState<string>("");
   const [success, setSuccess] = useState<string>("");
 
@@ -15,39 +14,37 @@ const Withdrawal: React.FC<WithdrawalProps> = ({ userId }) => {
     e.preventDefault();
     setError("");
     setSuccess("");
+
     if (amount <= 0) {
       return setError("Withdrawal amount must be positive.");
     }
+
     try {
-      const res = await processTransaction(userId, branch, { type: "withdrawal", amount, date: "", branch });
-      setSuccess(`Withdrawal successful! Branch ${branch} new cash limit: $${res.branch.cashLimit}`);
-    } catch (err) {
-      setError(err as string);
+      const res = await withdrawFromAccount(userId, amount);
+      setSuccess(
+        `Withdrawal successful. New balance: $${res.customer.balance}, Branch balance: $${res.branch.balance}`
+      );
+    } catch (err: any) {
+      if (err.response?.data?.error) {
+        setError(err.response.data.error);
+      } else {
+        setError("Something went wrong. Please try again.");
+      }
     }
   };
 
   return (
     <div>
-      <h3>Cash Withdrawal</h3>
+      <h3>Withdrawal</h3>
       <form onSubmit={handleWithdrawal}>
         <div>
           <label>Amount ($): </label>
           <input
             type="number"
             value={amount}
-            onChange={e => setAmount(parseFloat(e.target.value))}
+            onChange={(e) => setAmount(parseFloat(e.target.value))}
             required
           />
-        </div>
-        <div>
-          <label>Branch: </label>
-          <select value={branch} onChange={e => setBranch(e.target.value)}>
-            <option value="Downtown Toronto">Downtown Toronto</option>
-            <option value="East York">East York</option>
-            <option value="Scarborough">Scarborough</option>
-            <option value="North York">North York</option>
-            <option value="Etobicoke">Etobicoke</option>
-          </select>
         </div>
         {error && <p style={{ color: "red" }}>{error}</p>}
         {success && <p style={{ color: "green" }}>{success}</p>}

@@ -1,22 +1,26 @@
 export interface User {
-  id: number;
+  _id: string;
   name: string;
   email: string;
-  password: string;
-  role: "customer" | "admin";
+  pass: string; // backend uses `pass` not `password`
+  balance: number;
+  branchId: string;
+  role?: "customer" | "admin";
   transactions?: Transaction[];
 }
 
 export interface Transaction {
   type: "deposit" | "withdrawal";
   amount: number;
-  date: string;
-  branch: string;
+  date?: string;
+  branch?: string;
 }
 
 export interface Branch {
-  name: string;
-  cashLimit: number;
+  _id: string;
+  location: string;
+  cash_limit: number;
+  balance: number;
 }
 
 export interface Account {

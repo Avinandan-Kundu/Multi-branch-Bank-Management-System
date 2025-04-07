@@ -1,82 +1,67 @@
-import React, { useState } from "react";
+import React from "react";
 import { Branch } from "../../types";
-import { replenishBranch } from "../../services/BankService";
+import { resetBranchBalance } from "../../services/BankService";
 
+// ✅ Define props interface
 interface BranchManagementProps {
   branches: Branch[];
   setBranches: (branches: Branch[]) => void;
 }
 
+// ✅ Use props properly
 const BranchManagement: React.FC<BranchManagementProps> = ({ branches, setBranches }) => {
-  const [selectedBranch, setSelectedBranch] = useState<string>(branches[0]?.name || "");
-  const [amount, setAmount] = useState<number>(0);
-  const [message, setMessage] = useState<string>("");
+  const [selectedBranchId, setSelectedBranchId] = React.useState<string>("");
+  const [message, setMessage] = React.useState<string>("");
 
-  const handleReplenish = async (e: React.FormEvent) => {
+  React.useEffect(() => {
+    if (branches.length > 0) {
+      setSelectedBranchId(branches[0]._id);
+    }
+  }, [branches]);
+
+  const handleReset = async (e: React.FormEvent) => {
     e.preventDefault();
     setMessage("");
-    if (amount <= 0) {
-      return setMessage("Replenishment amount must be positive.");
-    }
+
+    if (!selectedBranchId) return;
+
     try {
-      const updatedBranch = await replenishBranch(selectedBranch, amount);
-      const updatedBranches = branches.map(b => b.name === updatedBranch.name ? updatedBranch : b);
-      setBranches(updatedBranches);
-      setMessage(`Branch ${updatedBranch.name} replenished successfully. New cash limit: $${updatedBranch.cashLimit}`);
-    } catch (err) {
-      setMessage(err as string);
+      const result = await resetBranchBalance(selectedBranchId);
+      const updated = branches.map((b) =>
+        b._id === selectedBranchId ? result.branch : b
+      );
+      setBranches(updated);
+      setMessage(
+        `Branch "${result.branch.location}" reset to cash limit: $${result.branch.cash_limit}`
+      );
+    } catch (err: any) {
+      if (err.response?.data?.error) {
+        setMessage(err.response.data.error);
+      } else {
+        setMessage("Failed to reset branch.");
+      }
     }
   };
 
   return (
-    <div style={{ marginBottom: "30px", padding: "20px", border: "1px solid #e0e0e0", borderRadius: "8px" }}>
-      <h3 style={{ textAlign: "left", marginBottom: "20px" }}>Branch Management</h3>
-      <form onSubmit={handleReplenish} style={{ display: "flex", flexDirection: "column", gap: "15px" }}>
-        <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-start" }}>
-          <label style={{ marginBottom: "5px" }}>Select Branch:</label>
-          <select
-            value={selectedBranch}
-            onChange={e => setSelectedBranch(e.target.value)}
-            style={{ width: "100%", padding: "8px", boxSizing: "border-box" }}
-          >
-            {branches.map((branch, index) => (
-              <option key={index} value={branch.name}>
-                {branch.name} (Cash Limit: ${branch.cashLimit})
-              </option>
-            ))}
-          </select>
-        </div>
-        <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-start" }}>
-          <label style={{ marginBottom: "5px" }}>Replenish Amount ($):</label>
-          <input
-            type="number"
-            value={amount}
-            onChange={e => setAmount(parseFloat(e.target.value))}
-            required
-            style={{ width: "100%", padding: "8px", boxSizing: "border-box" }}
-          />
-        </div>
-        <div style={{ display: "flex", justifyContent: "center" }}>
-          <button 
-            type="submit"
-            style={{ 
-              padding: "10px 20px",
-              marginTop: "10px"
-            }}
-          >
-            Replenish
-          </button>
-        </div>
+    <div>
+      <h3>Branch Cash Reset</h3>
+      <form onSubmit={handleReset}>
+        <label>Select Branch: </label>
+        <select
+          value={selectedBranchId}
+          onChange={(e) => setSelectedBranchId(e.target.value)}
+        >
+          {branches.map((branch) => (
+            <option key={branch._id} value={branch._id}>
+              {branch.location}
+            </option>
+          ))}
+        </select>
+        <br />
+        <button type="submit">Reset Branch Balance</button>
       </form>
-      {message && (
-        <p style={{ 
-          marginTop: "15px",
-          color: message.includes("successfully") ? "green" : "red",
-          textAlign: "center"
-        }}>
-          {message}
-        </p>
-      )}
+      {message && <p style={{ marginTop: "1rem" }}>{message}</p>}
     </div>
   );
 };

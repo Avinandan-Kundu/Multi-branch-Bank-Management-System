@@ -1,77 +1,61 @@
-/* Home.css */
-.app-container {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: linear-gradient(135deg, #95e6a9 0%, #709df0 100%);
-  overflow-y: auto;
-}
-
+/* src/components/Home.css */
 .home-container {
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-}
-
-.navbar {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 1rem 2rem;
-  background-color: rgba(255, 255, 255, 0.9);
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  position: relative;
-  z-index: 10;
-}
-
-.logo-image {
-  width: 200px;
-  height: 100px;
-  object-fit: contain;
-}
-
-.nav-buttons {
-  display: flex;
-  gap: 1rem;
-}
-
-.nav-button {
-  padding: 0.5rem 1.5rem;
-  background-color: #003366;
-  color: white;
-  border: none;
-  border-radius: 5px;
-  font-weight: 2--00;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-}
-
-.nav-button:hover {
-  background-color: #002244;
-}
-
-.welcome-section {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-  padding: 2rem;
-  position: relative;
-  z-index: 1;
-}
-
-.welcome-title {
-  color: #003366;
-  font-size: 2.5rem;
-  margin-bottom: 1rem;
-}
-
-.welcome-subtitle {
-  color: #003366;
-  font-size: 1.2rem;
-  max-width: 600px;
-}
+    min-height: 100vh;
+    background: linear-gradient(135deg, #a0d8ef, #a8e6a3); /* Light blue to green gradient */
+    color: #003366;
+    font-family: 'Roboto', sans-serif;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 2rem;
+    background-color: rgba(255, 255, 255, 0.9);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+  
+  .logo img {
+    height: 50px;
+  }
+  
+  .nav-buttons button {
+    margin-left: 1rem;
+    padding: 0.5rem 1rem;
+    font-size: 1rem;
+    border: none;
+    background-color: #003366;
+    color: #ffffff;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .nav-buttons button:hover {
+    background-color: #002244;
+  }
+  
+  .welcome-section {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    background-color: rgba(255, 255, 255, 0.8);
+    margin: 2rem;
+    padding: 2rem;
+    border-radius: 8px;
+  }
+  
+  .welcome-section h1 {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+  }
+  
+  .welcome-section p {
+    font-size: 1.25rem;
+  }
+  

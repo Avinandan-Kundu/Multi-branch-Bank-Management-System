@@ -1,108 +1,55 @@
-import { User, Transaction, Branch, Account } from "../types";
+import axios from "axios";
+import { User } from "../types";
 
-let users: User[] = [];
-let branches: Branch[] = [
-  { name: "Downtown Toronto", cashLimit: 1000000 },
-  { name: "East York", cashLimit: 750000 },
-  { name: "Scarborough", cashLimit: 500000 },
-  { name: "North York", cashLimit: 800000 },
-  { name: "Etobicoke", cashLimit: 600000 },
-];
+const API_BASE = "http://localhost:5005/api";
 
-// Simulate user signup
-export const signupUser = (user: User): Promise<User> => {
-  return new Promise((resolve, reject) => {
-    // Check if email already exists
-    if (users.find(u => u.email === user.email)) {
-      return reject("Email already in use.");
-    }
-    user.id = users.length + 1;
-    user.transactions = [];
-    users.push(user);
-    resolve(user);
-  });
+// 🔐 Login
+export const loginUser = async (email: string, pass: string): Promise<User> => {
+  const response = await axios.post(`${API_BASE}/auth/login`, { email, pass });
+  return response.data.customer;
 };
 
-// Simulate login
-export const loginUser = (email: string, password: string): Promise<User> => {
-  return new Promise((resolve, reject) => {
-    const user = users.find(u => u.email === email && u.password === password);
-    if (user) {
-      resolve(user);
-    } else {
-      reject("Invalid email or password.");
-    }
-  });
+// 🧾 Signup (creates new user)
+export const signupUser = async (user: {
+  name: string;
+  email: string;
+  pass: string;
+  balance: number;
+  branchId: string;
+}): Promise<User> => {
+  const response = await axios.post(`${API_BASE}/customers`, user);
+  return response.data;
 };
 
-// Simulate deposit/withdrawal and update branch cash
-export const processTransaction = (
-  userId: number,
-  branchName: string,
-  transaction: Transaction
-): Promise<{ user: User; branch: Branch }> => {
-  return new Promise((resolve, reject) => {
-    const user = users.find(u => u.id === userId);
-    const branch = branches.find(b => b.name === branchName);
-    if (!user || !branch) {
-      return reject("User or branch not found.");
-    }
-    if (transaction.type === "withdrawal") {
-      if (transaction.amount > branch.cashLimit) {
-        return reject(`Withdrawal amount exceeds branch limit. Please choose a branch with sufficient funds.`);
-      }
-      branch.cashLimit -= transaction.amount;
-    } else {
-      branch.cashLimit += transaction.amount; // For deposits, add cash (if needed)
-    }
-    user.transactions?.push({ ...transaction, date: new Date().toISOString() });
-    resolve({ user, branch });
-  });
+// 💰 Deposit
+export const depositToAccount = async (customerId: string, amount: number) => {
+  const response = await axios.post(`${API_BASE}/customers/${customerId}/deposit`, { amount });
+  return response.data;
 };
 
-// Simulate admin replenishing branch cash
-export const replenishBranch = (branchName: string, amount: number): Promise<Branch> => {
-  return new Promise((resolve, reject) => {
-    const branch = branches.find(b => b.name === branchName);
-    if (!branch) {
-      return reject("Branch not found.");
-    }
-    branch.cashLimit += amount;
-    resolve(branch);
-  });
+// 💸 Withdraw
+export const withdrawFromAccount = async (customerId: string, amount: number) => {
+  const response = await axios.post(`${API_BASE}/customers/${customerId}/withdraw`, { amount });
+  return response.data;
 };
 
-// Fetch branches data
-export const getBranches = (): Promise<Branch[]> => {
-  return Promise.resolve(branches);
+// 🏦 Get all branches (for display or dropdown)
+export const getAllBranches = async () => {
+  const response = await axios.get(`${API_BASE}/branches`);
+  return response.data;
 };
 
-// Fetch transactions for a user or all (admin)
-export const getTransactions = (userId?: number): Promise<Transaction[]> => {
-  if (userId) {
-    const user = users.find(u => u.id === userId);
-    return Promise.resolve(user?.transactions || []);
-  } else {
-    // For admin: combine all transactions
-    const allTransactions = users.reduce<Transaction[]>((acc, curr) => {
-      return acc.concat(curr.transactions || []);
-    }, []);
-    return Promise.resolve(allTransactions);
-  }
+// ⚠️ Get branches with low cash
+export const getLowCashBranches = async () => {
+  const response = await axios.get(`${API_BASE}/branches/warnings/low-cash`);
+  return response.data;
 };
 
-
-export const createDefaultAccount = (): Promise<Account> => {
-  return new Promise((resolve) => {
-    const accountNumber = 'AC' + Math.floor(1000000000 + Math.random() * 9000000000).toString();
-    const newAccount: Account = { number: accountNumber, balance: 0 };
-    resolve(newAccount);
-  });
+// 🧯 Reset a branch balance to max
+export const resetBranchBalance = async (branchId: string) => {
+  const response = await axios.patch(`${API_BASE}/branches/${branchId}/reset`);
+  return response.data;
 };
-
-
-
-
-export const logoutUser = (): void => {
+export const logoutUser = () => {
   localStorage.removeItem("user");
 };

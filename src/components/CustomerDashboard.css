@@ -1,97 +1,35 @@
-/* CustomerDashboard.css */
-.app-container {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: linear-gradient(135deg, #95e6a9 0%, #709df0 100%);
-  overflow-y: auto;
-  display: flex;
-  justify-content: center;
-  padding: 20px;
-}
-
 .dashboard-container {
-  width: 100%;
-  max-width: 450px;
-  background-color: rgba(255, 255, 255, 0.9);
-  border-radius: 8px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  justify-content: center;
-  padding: 30px;
-  margin: 20px 0;
-}
-
-.dashboard-header {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  margin-bottom: 2rem;
-  position: relative;
-}
-
-.dashboard-header h2 {
-  color: #003366;
-  margin-bottom: 1rem;
-}
-
-.account-info {
-  margin: 1rem 0;
-  text-align: center;
-}
-
-.account-info p {
-  margin: 0.5rem 0;
-  color: #003366;
-}
-
-.logout-button {
-  position: absolute;
-  top: 0;
-  right: 0;
-  padding: 8px 16px;
-  background-color: #003366;
-  color: white;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  transition: background-color 0.3s;
-}
-
-.logout-button:hover {
-  background-color: #002244;
-}
-
-.dashboard-nav {
-  display: flex;
-  justify-content: center;
-  gap: 1rem;
-  margin-bottom: 2rem;
-}
-
-.nav-button {
-  padding: 10px 20px;
-  background-color: #f0f0f0;
-  color: #003366;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  transition: all 0.3s;
-}
-
-.nav-button:hover {
-  background-color: #e0e0e0;
-}
-
-.nav-button.active {
-  background-color: #003366;
-  color: white;
-}
-
-.dashboard-content {
-  padding: 2rem;
-  background-color: #ffffff;
-  border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-}
+    padding: 1rem;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  .dashboard-header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 1rem;
+  }
+  
+  .account-info {
+    margin: 0.5rem 0;
+  }
+  
+  .dashboard-nav {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    margin-bottom: 1rem;
+  }
+  
+  .dashboard-nav button {
+    padding: 0.5rem 1rem;
+  }
+  
+  .dashboard-content {
+    padding: 1rem;
+    background-color: #ffffff;
+    border-radius: 5px;
+  }
+  
